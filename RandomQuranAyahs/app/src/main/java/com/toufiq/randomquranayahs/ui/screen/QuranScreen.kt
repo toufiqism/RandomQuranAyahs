@@ -107,17 +107,6 @@ fun QuranScreen(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                // Header
-                Text(
-                    text = "Random Quran Ayah",
-                    style = MaterialTheme.typography.headlineMedium,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier
-                        .padding(vertical = 16.dp)
-                        .scale(if (visible) 1f else 0.5f),
-                    color = MaterialTheme.colorScheme.onBackground
-                )
-
                 // Content
                 AnimatedContent(
                     targetState = state.uiState,
