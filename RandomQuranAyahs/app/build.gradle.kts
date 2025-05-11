@@ -67,6 +67,14 @@ dependencies {
     implementation(libs.okhttp)
     implementation(libs.okhttp.logging)
 
+    // WorkManager
+    implementation("androidx.work:work-runtime-ktx:2.10.1")
+    implementation("androidx.hilt:hilt-work:1.2.0")
+    kapt("androidx.hilt:hilt-compiler:1.2.0")
+
+    // DataStore
+    implementation("androidx.datastore:datastore-preferences:1.1.6")
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
