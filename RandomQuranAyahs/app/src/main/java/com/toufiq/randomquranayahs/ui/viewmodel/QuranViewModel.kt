@@ -2,6 +2,7 @@ package com.toufiq.randomquranayahs.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.toufiq.randomquranayahs.data.remote.NetworkError
 import com.toufiq.randomquranayahs.data.repository.QuranRepository
 import com.toufiq.randomquranayahs.ui.state.QuranState
 import com.toufiq.randomquranayahs.ui.state.QuranUiState
@@ -32,19 +33,28 @@ class QuranViewModel @Inject constructor(
                             uiState = QuranUiState.Success(response.data),
                             isLoading = false,
                             ayah = response.data,
-                            error = null
+                            error = null,
+                            networkError = null
                         )
                     }
                 }
-                .onFailure { error ->
+                .onError { networkError ->
                     _state.update { 
                         it.copy(
-                            uiState = QuranUiState.Error(error.message ?: "Unknown error occurred"),
+                            uiState = QuranUiState.Error(networkError.message),
                             isLoading = false,
-                            error = error.message ?: "Unknown error occurred"
+                            error = networkError.message,
+                            networkError = networkError
                         )
                     }
                 }
+        }
+    }
+
+    fun retry() {
+        val currentError = _state.value.networkError
+        if (currentError?.isRetryable == true) {
+            loadRandomAyah()
         }
     }
 

@@ -1,6 +1,7 @@
 package com.toufiq.randomquranayahs.ui.state
 
 import com.toufiq.randomquranayahs.data.model.QuranData
+import com.toufiq.randomquranayahs.data.remote.NetworkError
 
 sealed class QuranUiState {
     data object Initial : QuranUiState()
@@ -13,5 +14,6 @@ data class QuranState(
     val uiState: QuranUiState = QuranUiState.Initial,
     val isLoading: Boolean = false,
     val error: String? = null,
-    val ayah: QuranData? = null
+    val ayah: QuranData? = null,
+    val networkError: NetworkError? = null
 ) 
