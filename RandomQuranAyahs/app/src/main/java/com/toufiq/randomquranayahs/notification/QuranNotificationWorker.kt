@@ -12,7 +12,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 @HiltWorker
-class QuranNotificationWorker @AssistedInject constructor(
+class QuranNotificationWorker @AssistedInject constructor (
     @Assisted appContext: Context,
     @Assisted workerParams: WorkerParameters,
     private val quranRepository: QuranRepository,

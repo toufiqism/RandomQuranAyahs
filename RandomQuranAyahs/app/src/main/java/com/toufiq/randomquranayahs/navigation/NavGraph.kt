@@ -1,36 +1,45 @@
 package com.toufiq.randomquranayahs.navigation
 
 import androidx.compose.runtime.Composable
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
+import androidx.navigation3.runtime.NavKey
+import androidx.navigation3.runtime.entryProvider
+import androidx.navigation3.runtime.rememberNavBackStack
+import androidx.navigation3.ui.NavDisplay
 import com.toufiq.randomquranayahs.ui.screen.QuranScreen
 import com.toufiq.randomquranayahs.ui.screen.SettingsScreen
+import kotlinx.serialization.Serializable
 
-sealed class Screen(val route: String) {
-    object Quran : Screen("quran")
-    object Settings : Screen("settings")
-}
+// Type-safe route definitions using Kotlin Serialization
+@Serializable
+data object QuranRoute : NavKey
+
+@Serializable
+data object SettingsRoute : NavKey
 
 @Composable
-fun NavGraph(navController: NavHostController) {
-    NavHost(
-        navController = navController,
-        startDestination = Screen.Quran.route
-    ) {
-        composable(Screen.Quran.route) {
-            QuranScreen(
-                onSettingsClick = {
-                    navController.navigate(Screen.Settings.route)
-                }
-            )
+fun AppNavigation() {
+    // Create a back stack with the initial route
+    val backStack = rememberNavBackStack(QuranRoute)
+
+    // NavDisplay renders the current destination
+    NavDisplay(
+        backStack = backStack,
+        entryProvider = entryProvider {
+            entry<QuranRoute> {
+                QuranScreen(
+                    onSettingsClick = {
+                        backStack.add(SettingsRoute)
+                    }
+                )
+            }
+
+            entry<SettingsRoute> {
+                SettingsScreen(
+                    onBackClick = {
+                        backStack.removeLastOrNull()
+                    }
+                )
+            }
         }
-        composable(Screen.Settings.route) {
-            SettingsScreen(
-                onBackClick = {
-                    navController.popBackStack()
-                }
-            )
-        }
-    }
-} 
+    )
+}
